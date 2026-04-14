@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from 'src/app/services/firebase/auth.service';
 
 @Component({
+  standalone: false,
   selector: 'app-forgot',
   templateUrl: './forgot.component.html',
   styleUrls: ['./forgot.component.scss']

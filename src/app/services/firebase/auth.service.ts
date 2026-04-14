@@ -1,123 +1,86 @@
-import {Injectable, NgZone} from '@angular/core';
-import {AngularFireAuth} from '@angular/fire/auth';
-import {AngularFirestore} from '@angular/fire/firestore';
-import {Router} from '@angular/router';
-import {auth} from 'firebase/app';
-import 'firebase/auth';
+import { HttpClient } from '@angular/common/http';
+import { Injectable, NgZone } from '@angular/core';
+import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-  userData: firebase.User;
+  userData: any = null;
 
   constructor(
-    public afs: AngularFirestore,
-    public afAuth: AngularFireAuth,
+    private http: HttpClient,
     public router: Router,
-    public ngZone: NgZone
+    public ngZone: NgZone,
   ) {
-    this.afAuth.authState.subscribe(user => {
-      //save userData in localStorage if logged in
-      //else save 'null' in localStorage if logged out
-      if (user) {
-        this.userData = user;
-        localStorage.setItem('user', JSON.stringify(this.userData));
-        JSON.parse(localStorage.getItem('user'));
-      } else {
-        localStorage.setItem('user', null);
-        JSON.parse(localStorage.getItem('user'));
-      }
-    });
+    const storedUser = localStorage.getItem('user');
+    this.userData = storedUser ? JSON.parse(storedUser) : null;
   }
 
   get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem('user'));
-    return (user !== null && user.emailVerified !== false) ? true : false;
+    return user !== null;
   }
 
-  async SignIn(email, password) {
+  async SignIn(email: string, password: string) {
     try {
-      const result = await this.afAuth.signInWithEmailAndPassword(email, password);
-      this.ngZone.run(() => {
-        //this.SetUserData(result.user);
-        this.reloadComponent('/home');
-      });
-    } catch (error) {
-      window.alert(error.message);
+      const response: any = await this.http
+        .post(`${environment.baseUrl}/auth/login`, { email, password })
+        .toPromise();
+      if (response?.token && response?.user) {
+        localStorage.setItem('authToken', response.token);
+        localStorage.setItem('user', JSON.stringify(response.user));
+        this.userData = response.user;
+        this.ngZone.run(() => this.reloadComponent('/home'));
+      }
+    } catch (error: any) {
+      window.alert(error?.error?.message || error?.message || 'Login failed');
     }
   }
 
-  async SignUp(email, password) {
+  async SignUp(email: string, password: string) {
     try {
-      const result = await this.afAuth.createUserWithEmailAndPassword(email, password);
-      this.SendVerificationMail();
-      //this.SetUserData(result.user);
-    } catch (error) {
-      window.alert(error.message);
-    }
-  }
-
-  async SendVerificationMail() {
-    return (await this.afAuth.currentUser).sendEmailVerification()
-      .then(() => {
-        this.router.navigate(['verify-email']);
-      });
-  }
-
-  async ForgotPassword(passwordResetEmail) {
-    try {
-      await this.afAuth.sendPasswordResetEmail(passwordResetEmail);
-      window.alert('Password reset email sent, please check your inbox.');
+      await this.http
+        .post(`${environment.baseUrl}/auth/register`, { email, password })
+        .toPromise();
+      window.alert('Registration successful. Please sign in.');
       this.router.navigate(['login']);
-    } catch (error) {
-      window.alert(error);
+    } catch (error: any) {
+      window.alert(
+        error?.error?.message || error?.message || 'Registration failed',
+      );
     }
   }
 
-  //sign in with Google
-  GoogleAuth() {
-    return this.AuthLogin(new auth.GoogleAuthProvider());
-  }
-
-  async AuthLogin(provider) {
+  async ForgotPassword(passwordResetEmail: string) {
     try {
-      const result = await this.afAuth.signInWithPopup(provider);
-      this.ngZone.run(() => {
-        this.router.navigate(['home']);
-      });
-      //this.SetUserData(result.user);
-    } catch (error) {
-      window.alert(error);
+      await this.http
+        .post(`${environment.baseUrl}/auth/forgot-password`, {
+          email: passwordResetEmail,
+        })
+        .toPromise();
+      window.alert(
+        'Password reset request accepted. Check your email if configured.',
+      );
+      this.router.navigate(['login']);
+    } catch (error: any) {
+      window.alert(
+        error?.error?.message || error?.message || 'Failed to reset password',
+      );
     }
   }
 
-  async getToken() {
-    return (await this.afAuth.currentUser).getIdToken().then(
-      (token) => token.toString()
-    );
+  getToken(): string | null {
+    return localStorage.getItem('authToken');
   }
 
-  async SignOut() {
-    await this.afAuth.signOut();
+  SignOut() {
+    localStorage.removeItem('authToken');
     localStorage.removeItem('user');
+    this.userData = null;
     this.router.navigate(['home']);
   }
-
-  //save userData as an object in AngularFireStore
-  // SetUserData(user) {
-  //   const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
-  //   const userData: FirebaseUser = {
-  //     uid: user.uid,
-  //     email: user.email,
-  //     displayName: user.displayName,
-  //     photoURL: user.photoURL,
-  //     emailVerified: user.emailVerified
-  //   }
-  //   return userRef.set(userData, {
-  //     merge: true
-  //   })
-  // }
 
   reloadComponent(newUrl: string) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;

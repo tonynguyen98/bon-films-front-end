@@ -4,6 +4,7 @@ import {Review} from 'src/app/models/review';
 import {FilmService} from 'src/app/services/film/film.service';
 
 @Component({
+  standalone: false,
   selector: 'app-reviews-by-film',
   templateUrl: './reviews-by-film.component.html',
   styleUrls: ['./reviews-by-film.component.scss']

@@ -1,23 +1,20 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {AuthService} from 'src/app/services/firebase/auth.service';
-import {faGoogle} from '@fortawesome/free-brands-svg-icons';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/services/firebase/auth.service';
 
 @Component({
+  standalone: false,
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-  faGoogle = faGoogle;
-
   loginForm: FormGroup;
 
   constructor(
     public authService: AuthService,
     private fb: FormBuilder,
-  ) {
-  }
+  ) {}
 
   get email() {
     return this.loginForm.get('email');
@@ -28,11 +25,10 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.authService.SignIn(this.loginForm.get('email').value, this.loginForm.get('password').value);
-  }
-
-  onGoogleClick(): void {
-    this.authService.GoogleAuth();
+    this.authService.SignIn(
+      this.loginForm.get('email').value,
+      this.loginForm.get('password').value,
+    );
   }
 
   ngOnInit(): void {
@@ -41,6 +37,4 @@ export class LoginComponent implements OnInit {
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
-
-
 }

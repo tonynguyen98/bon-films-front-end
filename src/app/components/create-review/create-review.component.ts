@@ -10,6 +10,7 @@ import {ReviewService} from 'src/app/services/review/review.service';
 import {AddFilmComponent} from '../add-film/add-film.component';
 
 @Component({
+  standalone: false,
   selector: 'app-create-review',
   templateUrl: './create-review.component.html',
   styleUrls: ['./create-review.component.scss']

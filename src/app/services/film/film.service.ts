@@ -1,68 +1,61 @@
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {AngularFireAuth} from '@angular/fire/auth';
-import {Observable} from 'rxjs';
-import {Film} from 'src/app/models/film';
-import {Review} from 'src/app/models/review';
-import {environment} from '../../../environments/environment';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Film } from 'src/app/models/film';
+import { Review } from 'src/app/models/review';
+import { environment } from '../../../environments/environment';
+import { AuthService } from 'src/app/services/firebase/auth.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FilmService {
-  private baseUrl = environment.baseUrl;
+  private apiUrl = environment.baseUrl;
 
   constructor(
     private http: HttpClient,
-    private auth: AngularFireAuth,
-  ) {
-  }
+    private authService: AuthService,
+  ) {}
 
   getAllFilms(): Observable<Film[]> {
-    return this.http.get<Film[]>(this.baseUrl + `/films`);
+    return this.http.get<Film[]>(`${this.apiUrl}/films`);
   }
 
   getReviewsByFilm(id: string): Observable<Review[]> {
-    return this.http.get<Review[]>(this.baseUrl + `/film/${id}/reviews`);
+    return this.http.get<Review[]>(`${this.apiUrl}/films/${id}/reviews`);
   }
 
-  createFilm(title: string, genre: string, studio: string, director: string, topBilling: string, synopsis: string): Observable<Film> {
-    let body: Film = {
+  createFilm(
+    title: string,
+    genre: string,
+    studio: string,
+    director: string,
+    topBilling: string,
+    synopsis: string,
+  ): Observable<Film> {
+    const body: Film = {
       id: null,
-      title: title,
-      genre: genre,
-      studio: studio,
-      director: director,
-      topBilling: topBilling,
-      synopsis: synopsis,
+      title,
+      genre,
+      studio,
+      director,
+      topBilling,
+      synopsis,
       reviews: null,
     };
 
-    return new Observable<Film>(observer => {
-      this.auth.user.subscribe(user => {
-        user && user.getIdToken().then(token => {
-          this.http.post<Film>(
-            this.baseUrl + `/film/create`,
-            body,
-            httpOptionsWithAuthToken(token),
-          ).subscribe(() => observer.next());
-        });
-      });
-    });
+    const token = this.authService.getToken();
+    return this.http.post<Film>(
+      `${this.apiUrl}/films`,
+      body,
+      httpOptionsWithAuthToken(token),
+    );
   }
-
 }
 
-const httpsOptions = {
+const httpOptionsWithAuthToken = (token: string | null) => ({
   headers: new HttpHeaders({
     'Content-Type': 'application/json',
-  }),
-};
-
-const httpOptionsWithAuthToken = token => ({
-  headers: new HttpHeaders({
-    'Content-Type': 'application/json',
-    'AuthToken': token,
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
   }),
 });
-

@@ -1,92 +1,75 @@
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {AngularFireAuth} from '@angular/fire/auth';
-import {Observable} from 'rxjs';
-import {FilmReview} from 'src/app/models/film-review';
-import {Review} from 'src/app/models/review';
-import {Film} from 'src/app/models/film';
-import {environment} from '../../../environments/environment';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { FilmReview } from 'src/app/models/film-review';
+import { Review } from 'src/app/models/review';
+import { Film } from 'src/app/models/film';
+import { environment } from '../../../environments/environment';
+import { AuthService } from 'src/app/services/firebase/auth.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ReviewService {
-  private baseUrl = environment.baseUrl;
+  private apiUrl = environment.apiUrl;
 
   constructor(
     private http: HttpClient,
-    private auth: AngularFireAuth,
-  ) {
-  }
+    private authService: AuthService,
+  ) {}
 
   getAllReviews(): Observable<FilmReview[]> {
-    return this.http.get<FilmReview[]>(this.baseUrl + '/reviews');
+    return this.http.get<FilmReview[]>(`${this.apiUrl}/film-reviews`);
   }
 
   getReviewById(id: string): Observable<Review> {
-    return this.http.get<Review>(this.baseUrl + `/review/${id}`);
+    return this.http.get<Review>(`${this.apiUrl}/reviews/${id}`);
   }
 
-  createReview(rating: number, review: string, userReviewedId: string, film: Film): Observable<Review> {
-    let body: Review = {
+  createReview(
+    rating: number,
+    review: string,
+    userReviewedId: string,
+    film: Film,
+  ): Observable<Review> {
+    const body: Review = {
       id: null,
-      rating: rating,
-      review: review,
-      userReviewedId: userReviewedId,
-      film: film,
+      rating,
+      review,
+      userReviewedId,
+      film,
       dateReviewed: null,
     };
 
-    return new Observable<Review>(observer => {
-      this.auth.user.subscribe(user => {
-        user && user.getIdToken().then(token => {
-          this.http.post<Review>(
-            this.baseUrl + `/review/create`,
-            body,
-            httpOptionsWithAuthToken(token),
-          ).subscribe(() => observer.next());
-        });
-      });
-    });
+    const token = this.authService.getToken();
+    return this.http.post<Review>(
+      `${this.apiUrl}/reviews`,
+      body,
+      httpOptionsWithAuthToken(token),
+    );
   }
 
   editReview(id: number, rating: number, review: string): Observable<Review> {
-    return new Observable<Review>(observer => {
-      this.auth.user.subscribe(user => {
-        user && user.getIdToken().then(token => {
-          this.http.put<Review>(
-            this.baseUrl + `/review/${id}`,
-            {rating, review},
-            httpOptionsWithAuthToken(token),
-          ).subscribe(() => observer.next());
-        });
-      });
-    });
+    const token = this.authService.getToken();
+    return this.http.put<Review>(
+      `${this.apiUrl}/reviews/${id}`,
+      { rating, review },
+      httpOptionsWithAuthToken(token),
+    );
   }
 
   deleteReview(id: string): Observable<any> {
-    return new Observable<any>(observer => {
-      this.auth.user.subscribe(user => {
-        user && user.getIdToken().then(token => {
-          this.http.delete(
-            this.baseUrl + `/review/${id}`,
-            httpOptionsWithAuthToken(token)
-          ).subscribe(() => observer.next());
-        });
-      });
-    });
+    const token = this.authService.getToken();
+    return this.http.delete(
+      `${this.apiUrl}/reviews/${id}`,
+      httpOptionsWithAuthToken(token),
+    );
   }
 }
 
-const httpsOptions = {
+const httpOptionsWithAuthToken = (token: string | null) => ({
   headers: new HttpHeaders({
     'Content-Type': 'application/json',
-  }),
-};
-
-const httpOptionsWithAuthToken = token => ({
-  headers: new HttpHeaders({
-    'Content-Type': 'application/json',
-    'AuthToken': token,
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
   }),
 });

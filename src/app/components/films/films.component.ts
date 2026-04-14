@@ -3,6 +3,7 @@ import {Film} from 'src/app/models/film';
 import {FilmService} from 'src/app/services/film/film.service';
 
 @Component({
+  standalone: false,
   selector: 'app-films',
   templateUrl: './films.component.html',
   styleUrls: ['./films.component.scss']

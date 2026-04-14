@@ -1,31 +1,74 @@
 # Bon Films Front-End
 
-A website that allows users to write reviews on films.
+An Angular web application for browsing films and posting reviews.
 
-- Single Page Web Application using Angular 10
-- Styling using Bootstrap 4
-- Dependency Injection with Angular Services
-- Firebase Authorization for Email/Password and Google Sign In
-- Netlify for hosting
+- Frontend updated to Angular 20
+- Uses Bootstrap 5 and modern Angular CLI configuration
+- HTTP client integration with a Spring Boot backend API
+- JWT-based auth flow (no Firebase or direct SQL in the frontend)
 
-# Visit the website:
+# Local development
 
-https://nguyentony.com
+## Requirements
 
-# GitHub Repository for back-end:
+- Node.js 18+ or 20+
+- npm
+- A running Spring Boot backend on `http://localhost:8080`
+
+## Run the app
+
+```bash
+npm install
+npm run start
+```
+
+Open the app at `http://localhost:4200`.
+
+## Build for production
+
+```bash
+npm run build -- --configuration=production
+```
+
+# Backend integration
+
+This frontend calls the Spring Boot backend at `http://localhost:8080`.
+The backend repository is:
 
 https://github.com/bon-films/bon-films-spring-boot
 
-# Features:
+# API routes used by the frontend
 
-Things that EVERYONE can do:
+- `POST /auth/login` — login and receive auth token
+- `POST /auth/register` — register a new user
+- `POST /auth/forgot-password` — request password reset
+- `GET /api/films` — list all films
+- `GET /api/films/{id}/reviews` — get reviews for a film
+- `POST /api/films` — create a new film
+- `GET /api/film-reviews` — get combined film and review data
+- `GET /api/reviews/{id}` — get a single review
+- `POST /api/reviews` — create a new review
+- `PUT /api/reviews/{id}` — update a review
+- `DELETE /api/reviews/{id}` — delete a review
+
+# Features
+
+Everyone can:
+
+- View all films
 - View all reviews
-- View all films that are in the database
-- View film details of the review
+- View film and review details
 
-Things that LOGGED IN USERS can do (including the items above): 
+Authenticated users can:
+
 - Create reviews
-- Add new films to review
-- View all their reviews
-- Edit their review
-- Delete their review
+- Add new films
+- View their own reviews
+- Edit reviews
+- Delete reviews
+
+# Notes
+
+- The frontend no longer contains any SQL logic.
+- Authentication is handled via the backend API.
+- Environment configuration points to the Spring Boot backend URL.

@@ -4,6 +4,7 @@ import {AuthService} from 'src/app/services/firebase/auth.service';
 import {ReviewService} from 'src/app/services/review/review.service';
 
 @Component({
+  standalone: false,
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']

@@ -7,6 +7,7 @@ import {ReviewService} from 'src/app/services/review/review.service';
 import {EditReviewComponent} from '../edit-review/edit-review.component';
 
 @Component({
+  standalone: false,
   selector: 'app-my-reviews',
   templateUrl: './my-reviews.component.html',
   styleUrls: ['./my-reviews.component.scss']

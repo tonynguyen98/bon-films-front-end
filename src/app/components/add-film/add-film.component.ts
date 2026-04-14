@@ -5,6 +5,7 @@ import {BsModalRef} from 'ngx-bootstrap/modal';
 import {FilmService} from 'src/app/services/film/film.service';
 
 @Component({
+  standalone: false,
   selector: 'app-add-film',
   templateUrl: './add-film.component.html',
   styleUrls: ['./add-film.component.scss']
