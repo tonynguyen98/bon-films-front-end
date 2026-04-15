@@ -1,0 +1,32 @@
+<section class="py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h3 class="card-title mb-3">Write a Review</h3>
+            <form [formGroup]="form" (ngSubmit)="submit()">
+              <div class="mb-3">
+                <label class="form-label">Film ID</label>
+                <input class="form-control" formControlName="filmId" type="number" />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Rating</label>
+                <select class="form-select" formControlName="rating">
+                  <option *ngFor="let value of [1,2,3,4,5]" [value]="value">{{ value }}</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Review</label>
+                <textarea class="form-control" rows="5" formControlName="review"></textarea>
+              </div>
+              <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+              <button class="btn btn-primary" type="submit" [disabled]="loading">{{ loading ? 'Saving…' : 'Submit
+                Review' }}</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

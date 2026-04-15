@@ -1,0 +1,21 @@
+<section class="py-5">
+  <div class="container">
+    <h2>My Reviews</h2>
+    <div *ngIf="loading" class="text-center py-4">
+      <div class="spinner-border text-primary"></div>
+    </div>
+    <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+    <div *ngIf="!loading && reviews.length === 0" class="alert alert-secondary">No reviews found.</div>
+    <div class="list-group">
+      <a *ngFor="let review of reviews" [routerLink]="['/review', review.id]"
+        class="list-group-item list-group-item-action">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">{{ review.film?.title || 'Film review' }}</h5>
+          <small>{{ review.rating }}/5</small>
+        </div>
+        <p class="mb-1 text-truncate">{{ review.review }}</p>
+        <small>{{ review.dateReviewed | date }}</small>
+      </a>
+    </div>
+  </div>
+</section>

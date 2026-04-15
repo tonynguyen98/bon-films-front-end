@@ -1,0 +1,21 @@
+<section class="py-5">
+  <div class="container">
+    <div *ngIf="review; else loadingOrError" class="card shadow-sm">
+      <div class="card-body">
+        <h3 class="card-title">Review Details</h3>
+        <p><strong>Film ID:</strong> {{ review?.film?.id || 'N/A' }}</p>
+        <p><strong>Rating:</strong> {{ review?.rating }}/5</p>
+        <p><strong>Review Text:</strong></p>
+        <p>{{ review?.review }}</p>
+        <p class="text-muted"><small>Reviewed by user {{ review?.userReviewedId }} on {{ review?.dateReviewed | date
+            }}</small></p>
+      </div>
+    </div>
+    <ng-template #loadingOrError>
+      <div *ngIf="loading" class="text-center py-5">
+        <div class="spinner-border text-primary"></div>
+      </div>
+      <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+    </ng-template>
+  </div>
+</section>

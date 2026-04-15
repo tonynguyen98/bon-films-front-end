@@ -1,17 +1,12 @@
-import {Component, OnInit} from '@angular/core';
+import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 @Component({
-  standalone: false,
   selector: 'app-root',
+  standalone: true,
+  imports: [RouterModule, NavbarComponent],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit {
-  title = 'Bon Films!';
-
-  constructor() {
-  }
-
-  ngOnInit(): void {
-  }
-}
+export class AppComponent {}

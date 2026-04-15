@@ -1,38 +1,32 @@
-<!-- display navbar for all routes -->
-<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-info">
-  <a class="navbar-brand" routerLink="/home">Bon Films!</a>
-
-  <div class="collapse navbar-collapse">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/reviews">All Reviews</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/films">All Films that are Reviewed</a>
-      </li>
-      <li *ngIf="authService.userData" class="nav-item">
-        <a class="nav-link" routerLink="/create-review">Create a New Review</a>
-      </li>
-    </ul>
-
-    <!-- show dropdown if user logged in -->
-    <div *ngIf="authService.userData as user" class="btn-group" dropdown>
-      <button aria-controls="dropdown-basic" class="btn btn-info dropdown-toggle" dropdownToggle id="button-basic"
-              type="button">
-        {{(user.displayName) ? user.displayName : 'User'}} <span class="caret"></span>
-      </button>
-      <ul *dropdownMenu aria-labelledby="button-basic" class="dropdown-menu dropdown-menu-right" id="dropdown-alignment"
-          role="menu">
-        <li role="menuitem"><a class="dropdown-item" routerLink="/my-reviews">My Reviews</a></li>
-        <li class="divider dropdown-divider"></li>
-        <li role="menuitem"><a (click)="authService.SignOut()" class="dropdown-item" href="#">Logout</a>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="/">Bon Films</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link" routerLink="/home">Home</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/films">Films</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/my-reviews">My Reviews</a></li>
+      </ul>
+      <ul class="navbar-nav">
+        <li class="nav-item" *ngIf="!auth.isAuthenticated()"><a class="nav-link" routerLink="/login">Login</a></li>
+        <li class="nav-item" *ngIf="!auth.isAuthenticated()"><a class="nav-link" routerLink="/register">Register</a>
+        </li>
+        <li class="nav-item dropdown" *ngIf="auth.isAuthenticated()">
+          <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">Account</a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+            <li><a class="dropdown-item" routerLink="/my-reviews">My Reviews</a></li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li><button class="dropdown-item" (click)="logout()">Logout</button></li>
+          </ul>
         </li>
       </ul>
     </div>
-
-    <!-- show login button is no user logged in -->
-    <button *ngIf="!authService.userData" class="btn btn-info" routerLink="/login" type="button">
-      Login
-    </button>
   </div>
 </nav>

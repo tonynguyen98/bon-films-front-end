@@ -1,6 +1,2 @@
-.navbar-nav li {
-  border: 0.25px solid #5bc0de;
-  border-radius: 7px;
-  margin-left: 5px;
-  margin-right: 1px;
-}
+:host { display: block; }
+.navbar-brand { font-weight: 700; }
