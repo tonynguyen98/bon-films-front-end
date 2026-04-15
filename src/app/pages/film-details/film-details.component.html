@@ -1,39 +1,44 @@
-<section class="py-5">
+<section class="page-shell py-5">
   <div class="container" *ngIf="film; else loadingOrError">
-    <div class="row g-4">
-      <div class="col-lg-6">
-        <div class="card shadow-sm">
-          <div class="card-body">
-            <h3>{{ film.title }}</h3>
-            <p class="text-muted mb-1"><strong>Genre:</strong> {{ film.genre }}</p>
-            <p class="text-muted mb-1"><strong>Director:</strong> {{ film.director }}</p>
-            <p class="text-muted mb-1"><strong>Studio:</strong> {{ film.studio }}</p>
-            <p class="text-muted mb-1"><strong>Top Billing:</strong> {{ film.topBilling }}</p>
-            <p class="mt-3">{{ film.synopsis }}</p>
-            <a class="btn btn-outline-primary" [routerLink]="['/create-review']"
-              [queryParams]="{ filmId: film.id }">Write a review</a>
+    <div class="movie-detail-grid row g-4">
+      <div class="col-xl-5">
+        <div class="card film-summary shadow-sm rounded-4 p-4 h-100">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <span class="badge bg-primary">{{ film.genre || 'Film' }}</span>
+            <span class="text-muted small">{{ film.topBilling || 'Top billing' }}</span>
           </div>
+          <h2 class="mb-3">{{ film.title }}</h2>
+          <p class="text-muted mb-1"><strong>Director:</strong> {{ film.director || 'Unknown' }}</p>
+          <p class="text-muted mb-1"><strong>Studio:</strong> {{ film.studio || 'Unknown' }}</p>
+          <p class="mt-4">{{ film.synopsis }}</p>
+          <a class="btn btn-primary mt-4" [routerLink]="['/create-review']" [queryParams]="{ filmId: film.id }">Write a review</a>
         </div>
       </div>
-      <div class="col-lg-6">
-        <div class="card shadow-sm h-100">
-          <div class="card-body">
-            <h4 class="card-title">Reviews</h4>
-            <div *ngIf="reviews.length === 0" class="text-muted">No reviews yet.</div>
-            <div *ngFor="let review of reviews" class="review-item border-bottom py-3">
-              <div class="d-flex justify-content-between align-items-start">
-                <div>
-                  <p class="mb-1"><strong>Rating:</strong> {{ review.rating }}/5</p>
-                  <p class="mb-1">{{ review.review }}</p>
-                  <p class="text-muted mb-0"><small>By user {{ review.userReviewedId }} · {{ review.dateReviewed | date
-                      }}</small></p>
-                </div>
-                <div class="text-end">
-                  <a [routerLink]="['/review', review.id]" class="btn btn-sm btn-link">Details</a>
-                  <button class="btn btn-sm btn-danger" (click)="deleteReview(review)">Delete</button>
-                </div>
-              </div>
+      <div class="col-xl-7">
+        <div class="reviews-panel card shadow-sm rounded-4 p-4 h-100">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+              <h4 class="mb-1">Reviews</h4>
+              <p class="text-muted small mb-0">Read what other users have said about this film.</p>
             </div>
+            <span class="badge bg-accent text-dark">{{ reviews.length }} review{{ reviews.length === 1 ? '' : 's' }}</span>
+          </div>
+          <div *ngIf="reviews.length === 0" class="alert alert-secondary">No reviews yet.</div>
+          <div class="review-list">
+            <article *ngFor="let review of reviews" class="review-card rounded-4 p-3 mb-3">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <div>
+                  <strong>{{ review.userReviewedId ? 'User ' + review.userReviewedId : 'Guest' }}</strong>
+                  <p class="text-muted small mb-0">{{ review.dateReviewed | date:'mediumDate' }}</p>
+                </div>
+                <span class="badge bg-primary">{{ review.rating }}/5</span>
+              </div>
+              <p class="mb-3">{{ review.review }}</p>
+              <div class="d-flex gap-2">
+                <a [routerLink]="['/review', review.id]" class="btn btn-sm btn-outline-light">Details</a>
+                <button class="btn btn-sm btn-danger" (click)="deleteReview(review)">Delete</button>
+              </div>
+            </article>
           </div>
         </div>
       </div>
@@ -41,9 +46,7 @@
   </div>
   <ng-template #loadingOrError>
     <div class="container py-5">
-      <div *ngIf="loading" class="text-center py-5">
-        <div class="spinner-border text-primary" role="status"></div>
-      </div>
+      <div *ngIf="loading" class="text-center py-5"><div class="spinner-border text-primary" role="status"></div></div>
       <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
     </div>
   </ng-template>

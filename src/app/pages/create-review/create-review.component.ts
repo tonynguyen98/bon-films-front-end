@@ -7,6 +7,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { Film } from '../../models/film';
+import { FilmService } from '../../services/film.service';
 import { ReviewService } from '../../services/review.service';
 
 @Component({
@@ -18,7 +20,7 @@ import { ReviewService } from '../../services/review.service';
 })
 export class CreateReviewComponent implements OnInit {
   form: FormGroup;
-  filmId: number | null = null;
+  films: Film[] = [];
   loading = false;
   error = '';
 
@@ -27,6 +29,7 @@ export class CreateReviewComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private reviewService: ReviewService,
+    private filmService: FilmService,
   ) {
     this.form = this.fb.group({
       filmId: [null, Validators.required],
@@ -36,11 +39,22 @@ export class CreateReviewComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loadFilms();
     const id = this.route.snapshot.queryParamMap.get('filmId');
     if (id) {
-      this.filmId = Number(id);
-      this.form.patchValue({ filmId: this.filmId });
+      this.form.patchValue({ filmId: Number(id) });
     }
+  }
+
+  loadFilms(): void {
+    this.filmService.getFilms().subscribe({
+      next: (films) => {
+        this.films = films;
+      },
+      error: () => {
+        this.error = 'Unable to load film list.';
+      },
+    });
   }
 
   submit(): void {

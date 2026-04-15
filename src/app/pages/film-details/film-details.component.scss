@@ -1,1 +1,16 @@
 .review-item:last-child { border-bottom: none; }
+.movie-detail-grid {
+  gap: 1.5rem;
+}
+.film-summary {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.reviews-panel {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.review-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+}

@@ -1,14 +1,21 @@
-<section class="py-5">
+<section class="page-shell py-5">
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-lg-8">
-        <div class="card shadow-sm">
-          <div class="card-body">
-            <h3 class="card-title mb-3">Write a Review</h3>
+        <div class="card shadow-sm rounded-4 overflow-hidden">
+          <div class="card-header p-4 bg-dark bg-opacity-10">
+            <h3 class="mb-1">Write a Review</h3>
+            <p class="text-muted mb-0">Select a film, add your rating, and tell others what you think.</p>
+          </div>
+          <div class="card-body p-4">
             <form [formGroup]="form" (ngSubmit)="submit()">
               <div class="mb-3">
-                <label class="form-label">Film ID</label>
-                <input class="form-control" formControlName="filmId" type="number" />
+                <label class="form-label">Film</label>
+                <select class="form-select" formControlName="filmId">
+                  <option value="" disabled>Select a film</option>
+                  <option *ngFor="let film of films" [value]="film.id">{{ film.title }}</option>
+                </select>
+                <div *ngIf="films.length === 0" class="form-text">Loading films...</div>
               </div>
               <div class="mb-3">
                 <label class="form-label">Rating</label>
@@ -21,8 +28,7 @@
                 <textarea class="form-control" rows="5" formControlName="review"></textarea>
               </div>
               <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
-              <button class="btn btn-primary" type="submit" [disabled]="loading">{{ loading ? 'Saving…' : 'Submit
-                Review' }}</button>
+              <button class="btn btn-primary" type="submit" [disabled]="loading">{{ loading ? 'Saving…' : 'Submit Review' }}</button>
             </form>
           </div>
         </div>

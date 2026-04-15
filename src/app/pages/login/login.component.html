@@ -1,10 +1,13 @@
-<section class="py-5">
+<section class="auth-page py-5">
   <div class="container">
     <div class="row justify-content-center">
-      <div class="col-md-6">
-        <div class="card shadow-sm">
-          <div class="card-body">
-            <h3 class="card-title mb-3">Login</h3>
+      <div class="col-lg-5">
+        <div class="auth-card rounded-4 shadow-lg overflow-hidden">
+          <div class="auth-card-header p-4 text-center">
+            <h3>Welcome back</h3>
+            <p class="text-muted">Sign in to manage your reviews and contribute to the film community.</p>
+          </div>
+          <div class="card-body p-4">
             <form [formGroup]="form" (ngSubmit)="submit()">
               <div class="mb-3">
                 <label class="form-label">Email</label>
@@ -15,11 +18,14 @@
                 <input type="password" class="form-control" formControlName="password" />
               </div>
               <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
-              <button type="submit" class="btn btn-primary" [disabled]="loading">
+              <button type="submit" class="btn btn-primary w-100" [disabled]="loading">
                 {{ loading ? 'Signing in...' : 'Login' }}
               </button>
-              <a class="btn btn-link" routerLink="/register">Register</a>
             </form>
+            <div class="text-center mt-3">
+              <span class="text-muted">New here?</span>
+              <a routerLink="/register">Create an account</a>
+            </div>
           </div>
         </div>
       </div>

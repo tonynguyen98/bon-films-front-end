@@ -1,9 +1,46 @@
 <section class="home-page py-5">
   <div class="container">
-    <div class="text-center text-white bg-dark rounded-4 p-5 shadow-sm">
-      <h1>Bon Films Frontend</h1>
-      <p class="lead">Browse films, write reviews, and manage your own ratings with the Spring Boot API.</p>
-      <a class="btn btn-primary btn-lg" routerLink="/films">View Films</a>
+    <div class="hero rounded-4 p-5 shadow-lg overflow-hidden position-relative">
+      <div class="hero-overlay"></div>
+      <div class="row align-items-center gy-4">
+        <div class="col-lg-6">
+          <span class="eyebrow mb-3 d-inline-block">Your cinematic companion</span>
+          <h1 class="display-5 fw-bold">Discover films, explore reviews, and share your unique voice.</h1>
+          <p class="lead text-muted">Bon Films is built to help you manage films, read fresh opinions, and publish your own critiques with confidence.</p>
+          <div class="d-flex flex-wrap gap-3 mt-4">
+            <a class="btn btn-primary btn-lg" routerLink="/films">Browse Films</a>
+            <a class="btn btn-outline-primary btn-lg" routerLink="/create-review">Write a Review</a>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="row g-3">
+            <div class="col-6">
+              <article class="feature-card p-4 rounded-4 shadow-sm">
+                <h5>Film library</h5>
+                <p>Explore titles with rich summaries and review access from one place.</p>
+              </article>
+            </div>
+            <div class="col-6">
+              <article class="feature-card p-4 rounded-4 shadow-sm">
+                <h5>Review sharing</h5>
+                <p>Rate films, leave feedback, and keep your opinions organized.</p>
+              </article>
+            </div>
+            <div class="col-6">
+              <article class="feature-card p-4 rounded-4 shadow-sm">
+                <h5>Profile actions</h5>
+                <p>Login to manage personal reviews and favorites easily.</p>
+              </article>
+            </div>
+            <div class="col-6">
+              <article class="feature-card p-4 rounded-4 shadow-sm">
+                <h5>Modern design</h5>
+                <p>Enjoy a refined interface built for clarity and speed.</p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>

@@ -1,12 +1,11 @@
-<section class="py-5">
+<section class="page-shell py-5">
   <div class="container">
-    <div
-      class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-2">
+    <div class="section-header d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-3">
       <div>
         <h2>Films</h2>
-        <p class="text-muted">Browse the available films and view reviews.</p>
+        <p class="text-muted">Browse the latest titles, jump into reviews, or add a new film.</p>
       </div>
-      <div class="btn-toolbar gap-2">
+      <div class="d-flex flex-wrap gap-2">
         <a class="btn btn-success" routerLink="/add-film">Add Film</a>
         <a class="btn btn-outline-primary" routerLink="/create-review">Add Review</a>
         <button class="btn btn-secondary" (click)="loadFilms()">Refresh</button>
@@ -20,18 +19,20 @@
     <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
 
     <div class="row g-4">
-      <div class="col-md-4" *ngFor="let film of films">
-        <div class="card h-100 shadow-sm">
-          <div class="card-body d-flex flex-column">
-            <h5 class="card-title">{{ film.title }}</h5>
+      <div class="col-xl-4 col-lg-6" *ngFor="let film of films">
+        <article class="film-card h-100 rounded-4 shadow-sm overflow-hidden">
+          <div class="film-cover p-4">
+            <div class="cover-label">{{ film.genre || 'Genre' }}</div>
+            <h5 class="film-title mt-3">{{ film.title }}</h5>
+            <p class="film-subtitle text-muted">Directed by {{ film.director || 'Unknown' }}</p>
+          </div>
+          <div class="card-body d-flex flex-column bg-dark bg-opacity-5">
             <p class="card-text text-truncate">{{ film.synopsis }}</p>
-            <div class="mt-auto">
-              <p class="mb-1"><strong>Genre:</strong> {{ film.genre }}</p>
-              <p class="mb-3"><strong>Director:</strong> {{ film.director }}</p>
-              <a class="btn btn-primary" [routerLink]="['/film', film.id]">View reviews</a>
+            <div class="mt-auto pt-3">
+              <a class="btn btn-sm btn-outline-light" [routerLink]="['/film', film.id]">View details</a>
             </div>
           </div>
-        </div>
+        </article>
       </div>
     </div>
   </div>

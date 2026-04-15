@@ -1,21 +1,28 @@
-<section class="py-5">
+<section class="page-shell py-5">
   <div class="container">
-    <div *ngIf="review; else loadingOrError" class="card shadow-sm">
-      <div class="card-body">
-        <h3 class="card-title">Review Details</h3>
-        <p><strong>Film ID:</strong> {{ review?.film?.id || 'N/A' }}</p>
-        <p><strong>Rating:</strong> {{ review?.rating }}/5</p>
-        <p><strong>Review Text:</strong></p>
+    <div *ngIf="review; else loadingOrError" class="review-detail-card card shadow-sm rounded-4 overflow-hidden">
+      <div class="card-header p-4 bg-dark bg-opacity-10">
+        <h3 class="mb-1">Review Details</h3>
+        <p class="text-muted mb-0">Read the full review and associated film details.</p>
+      </div>
+      <div class="card-body p-4">
+        <div class="mb-4">
+          <h4 class="mb-1">{{ review?.film?.title || 'Unknown Film' }}</h4>
+          <p class="text-muted small mb-0">Reviewed by user {{ review?.userReviewedId || 'Guest' }} on {{ review?.dateReviewed | date:'mediumDate' }}</p>
+        </div>
+        <div class="d-flex flex-wrap gap-3 align-items-center mb-4">
+          <span class="badge bg-primary">Rating {{ review?.rating }}/5</span>
+          <span class="badge bg-secondary">Film ID: {{ review?.film?.id || 'N/A' }}</span>
+        </div>
+        <h5 class="mb-3">Review</h5>
         <p>{{ review?.review }}</p>
-        <p class="text-muted"><small>Reviewed by user {{ review?.userReviewedId }} on {{ review?.dateReviewed | date
-            }}</small></p>
       </div>
     </div>
     <ng-template #loadingOrError>
-      <div *ngIf="loading" class="text-center py-5">
-        <div class="spinner-border text-primary"></div>
+      <div class="container py-5">
+        <div *ngIf="loading" class="text-center py-5"><div class="spinner-border text-primary" role="status"></div></div>
+        <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
       </div>
-      <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
     </ng-template>
   </div>
 </section>

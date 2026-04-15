@@ -1,10 +1,13 @@
-<section class="py-5">
+<section class="page-shell py-5">
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-lg-8">
-        <div class="card shadow-sm">
-          <div class="card-body">
-            <h3 class="card-title mb-4">Add Film</h3>
+        <div class="card shadow-sm rounded-4 overflow-hidden">
+          <div class="card-header p-4 bg-dark bg-opacity-10">
+            <h3 class="mb-1">Add a New Film</h3>
+            <p class="text-muted mb-0">Create a film entry so others can review it.</p>
+          </div>
+          <div class="card-body p-4">
             <form [formGroup]="form" (ngSubmit)="submit()">
               <div class="row g-3">
                 <div class="col-md-6">
@@ -23,11 +26,11 @@
                   <label class="form-label">Director</label>
                   <input class="form-control" formControlName="director" />
                 </div>
-                <div class="col-md-12">
+                <div class="col-12">
                   <label class="form-label">Top Billing</label>
                   <input class="form-control" formControlName="topBilling" />
                 </div>
-                <div class="col-md-12">
+                <div class="col-12">
                   <label class="form-label">Synopsis</label>
                   <textarea class="form-control" rows="5" formControlName="synopsis"></textarea>
                 </div>

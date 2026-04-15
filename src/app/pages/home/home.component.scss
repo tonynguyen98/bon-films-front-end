@@ -1,1 +1,26 @@
-.home-page { min-height: calc(100vh - 80px); background: linear-gradient(135deg, #2f3e6b, #1f2a46); }
+.home-page { min-height: calc(100vh - 72px); }
+.hero {
+  position: relative;
+  overflow: hidden;
+  background: rgba(14, 23, 44, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top left, rgba(111, 83, 255, 0.4), transparent 35%),
+    radial-gradient(circle at bottom right, rgba(57, 197, 207, 0.18), transparent 28%);
+}
+.eyebrow {
+  color: var(--accent);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+.feature-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.feature-card h5 {
+  margin-bottom: 0.75rem;
+}

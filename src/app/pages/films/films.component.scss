@@ -1,2 +1,19 @@
 h2 { margin-bottom: 0.25rem; }
-.card-text { min-height: 5rem; }
+.film-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.film-cover {
+  background: linear-gradient(180deg, rgba(111, 83, 255, 0.92), rgba(36, 47, 84, 0.96));
+  color: #fff;
+}
+.cover-label {
+  display: inline-flex;
+  padding: 0.35rem 0.75rem;
+  background: rgba(255,255,255,0.1);
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.film-title { font-size: 1.15rem; margin-bottom: 0.2rem; }
+.film-subtitle { font-size: 0.9rem; }
